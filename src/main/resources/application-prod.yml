@@ -1,0 +1,13 @@
+app:
+  admin:
+    email: ${APP_ADMIN_EMAIL}
+spring:
+  application:
+    name: web-prod
+  devtools:
+    add-properties: false
+  jpa:
+    generate-ddl: true
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop

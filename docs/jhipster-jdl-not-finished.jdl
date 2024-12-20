@@ -1,0 +1,39 @@
+entity User {
+    createdBy Instant
+	email String required
+    role UserRole
+    posts Post
+}
+
+entity UserRole {
+	role Role
+    user User
+}
+
+entity Post {
+    title String
+    user User
+
+}
+
+enum Role {
+    ROLE_ADMIN, ENGLISH, SPANISH
+}
+
+relationship ManyToMany {
+	User{role} to UserRole{user}
+}
+
+relationship OneToMany {
+	User{posts} to Post{user}
+}
+
+
+// Set pagination options
+paginate User, Post with pagination
+
+// Set service options to all except few
+service all with serviceImpl
+
+// Set an angular suffix
+// angularSuffix * with mySuffix
