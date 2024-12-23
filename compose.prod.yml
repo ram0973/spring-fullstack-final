@@ -1,5 +1,5 @@
 services:
-  postgres:
+  postgres-service:
     image: 'postgres:16.6'
     environment:
       - POSTGRES_DB=${DB_NAME}
@@ -7,25 +7,26 @@ services:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
     ports:
       - ${DB_PORT}:5432
-  spring-boot-react-fullstack:
+    volumes:
+      - postgresql-data:/var/lib/postgresql/data
+
+  spring-boot-react:
     container_name: spring-boot
-    env_file: "./src/main/resources/.env"
-    #environment:
-    #  SPRING_APPLICATION_JSON: '{
-    #    "spring.datasource.url" : "jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}",
-    #  }'
-    #environment:
-      #SPRING_DATASOURCE_URL: jdbc:postgresql://${DB_NAME}:${DB_PORT}/${DB_NAME}
-    #  - APP_PROFILE=${APP_PROFILE}
-    #  - APP_ADMIN_EMAIL=${APP_ADMIN_EMAIL}
-    ##  - DB_NAME=${DB_NAME}
-    #  - DB_USER=${DB_USER}
-    #  - DB_PASSWORD=${DB_PASSWORD}
-    #  - DB_PORT=${DB_PORT}
-    restart: on-failure
+    environment:
+      - APP_PROFILE=${APP_PROFILE}
+      - APP_ADMIN_EMAIL=${APP_ADMIN_EMAIL}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_PORT=${DB_PORT}
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-service:${DB_PORT}/${DB_NAME}
+    restart: no
     ports:
-      - "8080:8080"
+      - '8080:8080'
     build:
       context: .
       dockerfile: ./Dockerfile
+    depends_on:
+      - postgres-service
 
+volumes:
+  postgresql-data:
