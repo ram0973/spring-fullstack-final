@@ -3,6 +3,7 @@ package ra.web.users;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.web.context.WebApplicationContext;
 import ra.web.page.users.User;
 import ra.web.page.users.UserMapper;
 import ra.web.page.users.UserRepository;
+import ra.web.page.users.dto.UserResponse;
 import ra.web.page.users.dto.UsersResponse;
 import ra.web.util.ModelGenerator;
 
@@ -62,10 +64,22 @@ public class UserControllerTest {
             .andExpect(status().isOk())
             .andReturn().getResponse();
         String body = response.getContentAsString();
-        //UsersResponse userDTOS = om.readValue(body, new TypeReference<>() {});
-        //List<User> actual = userDTOS.users().stream().map(userMapper::map).toList();
+        UsersResponse userDTOS = om.readValue(body, new TypeReference<>() {});
+        List<UserResponse> actual = userDTOS.users().stream().toList();
+        Assertions.assertEquals(1, actual.size());
+        Assertions.assertEquals(1, userDTOS.totalItems(), 1);
+        Assertions.assertEquals(1, userDTOS.totalPages(), 1);
         //var expected = userRepository.findAll();
         //Assertions.assertThat(actual).containsExactlyInAnyOrderElementsOf(expected);
+    }
+
+    @Test
+    public void testShow() throws Exception {
+        var request = get("/api/v1/users/1");
+        var result = mockMvc.perform(request)
+            .andExpect(status().isOk())
+            .andReturn();
+        var body = result.getResponse().getContentAsString();
     }
 
     @Test
