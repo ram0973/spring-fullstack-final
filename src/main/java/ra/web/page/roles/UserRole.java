@@ -7,7 +7,9 @@ import lombok.experimental.SuperBuilder;
 import ra.web.common.entity.BaseEntity;
 import ra.web.page.users.User;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -26,6 +28,6 @@ public class UserRole extends BaseEntity {
     @ManyToMany(mappedBy = "roles")
     @JsonIgnore
     @Builder.Default
-    private Set<User> users = new HashSet<>();
+    private List<User> users = new ArrayList<>();
 }
 

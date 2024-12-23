@@ -6,9 +6,12 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ra.web.common.mappers.JsonNullableMapper;
 import ra.web.common.mappers.ReferenceMapper;
-import ra.web.page.users.dto.PagedUsersResponse;
-import ra.web.page.users.dto.UserCreateRequest;
-import ra.web.page.users.dto.UserUpdateRequest;
+import ra.web.page.roles.UserRole;
+import ra.web.page.users.dto.*;
+import ra.web.page.users.dto.UsersResponse;
+
+import java.util.List;
+import java.util.Set;
 
 
 @Mapper(
@@ -18,11 +21,17 @@ import ra.web.page.users.dto.UserUpdateRequest;
     unmappedTargetPolicy = ReportingPolicy.IGNORE
 )
 public abstract class UserMapper {
-    public abstract User map(PagedUsersResponse pagedUsersResponse);
-
-    @Mapping(source = "avatar", target = "avatar", ignore = true)
+    @Mapping(target = "roles", ignore = true)
+    @Mapping(target = "avatar", ignore = true)//, qualifiedByName = "mapRolesStringsToEntities")
     public abstract User map(UserCreateRequest dto);
 
-    @Mapping(source = "avatar", target = "avatar", ignore = true)
+    public abstract UserResponse map(User user);
+
+    @Mapping(target = "avatar", ignore = true)
     public abstract void update(@MappingTarget User user, UserUpdateRequest dto);
+
+    //@Named("mapRolesStringsToEntities")
+    //public List<UserRole> mapRolesStringsToEntities(List<User.Role> roles) {
+    //    return null;
+    //}
 }

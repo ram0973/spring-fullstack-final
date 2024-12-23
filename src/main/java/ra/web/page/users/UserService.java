@@ -14,13 +14,14 @@ import org.springframework.transaction.annotation.Transactional;
 import ra.web.common.exceptions.EntityAlreadyExistsException;
 import ra.web.common.exceptions.ForbiddenOperationException;
 import ra.web.common.exceptions.NoSuchEntityException;
-import ra.web.page.roles.UserRole;
-import ra.web.page.roles.UserRoleRepository;
-import ra.web.page.users.dto.PagedUsersResponse;
-import ra.web.page.users.dto.UserCreateRequest;
-import ra.web.page.users.dto.UserUpdateRequest;
 import ra.web.common.util.MultiPartFileUtils;
 import ra.web.common.util.PagedEntityUtils;
+import ra.web.page.roles.UserRole;
+import ra.web.page.roles.UserRoleRepository;
+import ra.web.page.users.dto.UserCreateRequest;
+import ra.web.page.users.dto.UserResponse;
+import ra.web.page.users.dto.UserUpdateRequest;
+import ra.web.page.users.dto.UsersResponse;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -40,17 +41,14 @@ public class UserService {
     @Value("${app.admin.email}")
     private String adminEmail;
 
-    public Optional<PagedUsersResponse> findAllPaged(int page, int size, String[] sort) {
+    public UsersResponse findAllPaged(int page, int size, String[] sort) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(PagedEntityUtils.getSortOrders(sort)));
         Page<User> pagedUsers = userRepository.findAll(pageable);
-        List<User> Users = pagedUsers.getContent();
-        if (Users.isEmpty()) {
-            return Optional.empty();
-        } else {
-            PagedUsersResponse PagedUsersResponseDto = new PagedUsersResponse(Users, pagedUsers.getNumber(),
-                pagedUsers.getTotalElements(), pagedUsers.getTotalPages());
-            return Optional.of(PagedUsersResponseDto);
-        }
+        List<User> users = pagedUsers.getContent();
+        List<UserResponse> userResponses = users.stream().map(userMapper::map).toList();
+        UsersResponse dto = new UsersResponse(userResponses, pagedUsers.getNumber(),
+            pagedUsers.getTotalElements(), pagedUsers.getTotalPages());
+        return dto;
     }
 
     public Optional<User> findById(int id) {

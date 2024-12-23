@@ -3,9 +3,11 @@ package ra.web.common.entity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import net.datafaker.Faker;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.lang.NonNull;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,13 +23,16 @@ import java.util.stream.IntStream;
 @Configuration
 @Log4j2
 @RequiredArgsConstructor
-public class DataInitializer {
+@Profile("dev")
+public class DataGeneratorForDevelopment {
     @NonNull
     private final PasswordEncoder passwordEncoder;
     @NonNull
     private final UserRepository userRepository;
     @NonNull
     private final UserRoleRepository userRoleRepository;
+    @Value("${app.admin.email}")
+    private String adminEmail;
 
     @Bean
     @Transactional
@@ -37,7 +42,7 @@ public class DataInitializer {
             User admin = User.builder()
                 .firstName("Gendalf")
                 .lastName("White")
-                .email("gendalf-admin@white.com")
+                .email(adminEmail)
                 .password(passwordEncoder.encode("password"))
                 .createdBy(1)
                 .lastModifiedBy(1)

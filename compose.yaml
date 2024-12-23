@@ -1,5 +1,7 @@
 services:
-  postgres:
+  postgres-service-dev:
+    profiles:
+      - dev
     image: 'postgres:16.6'
     environment:
       - POSTGRES_DB=${DB_NAME}
@@ -7,3 +9,14 @@ services:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
     ports:
       - ${DB_PORT}:5432
+
+  postgres-service-test:
+    profiles:
+      - test
+    image: 'postgres:16.6'
+    environment:
+      - POSTGRES_DB=test
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=test
+    ports:
+      - "5433:5432"

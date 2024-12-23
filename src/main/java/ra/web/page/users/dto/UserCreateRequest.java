@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import org.springframework.web.multipart.MultipartFile;
+import ra.web.page.roles.UserRole;
 import ra.web.page.users.User;
 
 import java.util.List;

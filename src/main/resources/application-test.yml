@@ -1,0 +1,21 @@
+app:
+  admin:
+    email: "gendalf-test-admin@white.com"
+spring:
+  application:
+    name: web-test
+  datasource:
+    password: ${TEST_DB_PASSWORD:test}
+    url: jdbc:postgresql://${TEST_DB_HOST:localhost}:${TEST_DB_PORT:5433}/${TEST_B_NAME:test}
+    username: ${TEST_DB_USER:test}
+  docker:
+    compose:
+      skip:
+        in-tests: false
+      profiles:
+        active: test
+  jpa:
+    generate-ddl: true
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop

@@ -12,7 +12,7 @@ import ra.web.common.entity.BaseEntity;
 @Mapper(
     componentModel = MappingConstants.ComponentModel.SPRING
 )
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 public abstract class ReferenceMapper {
     @Autowired
     private EntityManager entityManager;
