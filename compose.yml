@@ -1,0 +1,57 @@
+---
+# This docker-compose file is ignoring in production, but been using
+# in development with: $ docker compose up
+
+services:
+  postgres:
+    container_name: postgres-web
+    image: postgres:16.6
+    restart: on-failure
+    ports:
+      - "5432:5432"
+    build:
+      context: .
+      dockerfile: ./docker/postgresql/Dockerfile
+#    volumes:
+#      - /var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=web
+      - POSTGRES_USER=web
+      - POSTGRES_PASSWORD=web
+    #  - LANG=ru_RU.utf8
+
+
+  maildev:
+    container_name: maildev-web
+    image: maildev/maildev:latest
+    restart: on-failure
+    ports:
+      - 8020:1080
+      - 1025:1025
+
+  # Мощный, но громоздкий интерфейс
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    restart: on-failure
+    ports:
+      - 8030:80
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+      - ./docker/pgadmin/servers.json:/pgadmin4/servers.json
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/misc/ping || exit -1
+      interval: 10s
+      timeout: 5s
+      start_period: 10s
+      retries: 5
+    depends_on:
+      - postgres
+
+volumes:
+  pgadmin_data:
+

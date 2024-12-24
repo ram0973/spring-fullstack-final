@@ -1,0 +1,31 @@
+---
+# This docker-compose file for production
+# Run with: $ docker compose up -d -f production.yml
+
+services:
+  spring-boot:
+    image: ram0973/spring
+    #restart:
+    environment:
+      SPRING_DATABASE_URL: "${DB_URL}"
+    ports:
+      - "8080:8080"
+  postgres:
+    container_name: postgres-web
+    image: postgres:16.6
+    #restart: on-failure
+    ports:
+      - "5432:5432"
+    build:
+      context: .
+      dockerfile: ./docker/postgresql/Dockerfile
+    environment:
+      - POSTGRES_DB=web
+      - POSTGRES_USER=web
+      - POSTGRES_PASSWORD=web
+    #  - LANG=ru_RU.utf8
+#  react:
+#    image: ghcr.io/ram0973/frontend-react:main
+#    restart: on-failure
+#    ports:
+#      - "5176:80"

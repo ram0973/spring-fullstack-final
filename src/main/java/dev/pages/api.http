@@ -1,0 +1,241 @@
+# AUTHENTICATION ###################
+
+
+### Register user
+POST http://localhost:8008/api/v1/auth/register
+Content-Type: application/json
+
+{
+  "email": "frodo@baggins.com",
+  "password": "password"
+}
+
+
+### Register user
+POST http://localhost:8008/api/v1/auth/register
+Content-Type: application/json
+
+{
+  "email": "bilbo@baggins.com",
+  "password": "password"
+}
+
+
+### Login Admin
+POST http://localhost:8008/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "gendalf@white.com",
+  "password": "password"
+}
+
+
+### Logout
+POST http://localhost:8008/api/v1/auth/logout
+
+
+### Me
+GET http://localhost:8008/api/v1/auth/me
+
+
+# ROLE ###################
+
+
+### Create role
+POST http://localhost:8008/api/v1/roles
+Content-Type: application/json
+
+{
+  "role": "TESTER"
+}
+
+
+### Read roles
+GET http://localhost:8008/api/v1/roles
+
+
+### Read role
+GET http://localhost:8008/api/v1/roles/USER
+
+
+### Update role - add deserialization error - last modifiedby not working
+PATCH http://localhost:8008/api/v1/roles/MODERATOR
+Content-Type: application/json
+
+{
+  "id": 2,
+  "role": "MODERATOR"
+}
+
+
+### Delete role by id
+DELETE http://localhost:8008/api/v1/roles/TESTER
+
+
+# USER ###################
+
+
+### Create user frodo
+POST http://localhost:8008/api/v1/users
+Content-Type: application/json
+
+{
+  "enabled": true,
+  "password": "password",
+  "roles": ["USER"],
+  "email": "frodo@baggins.com"
+}
+
+
+### Create user bilbo
+POST http://localhost:8008/api/v1/users
+Content-Type: application/json
+
+{
+  "enabled": true,
+  "password": "password",
+  "roles": ["USER"],
+  "email": "bilbo@baggins.com"
+}
+
+### Read users
+GET http://localhost:8008/api/v1/users?page=0&size=10
+
+
+### Read user 1
+GET http://localhost:8008/api/v1/users/1
+
+
+### Update user 1
+PATCH http://localhost:8008/api/v1/users/1
+Content-Type: application/json
+
+{
+  "id": 1,
+  "email": "gendalf@white.com",
+  "enabled": true,
+  "roles": ["ADMIN"]
+}
+
+
+### DELETE User by id
+DELETE http://localhost:8008/api/v1/users/2
+
+
+# POSTS ###################
+
+
+### Create post
+POST http://localhost:8008/api/v1/posts
+Content-Type: application/json
+
+{
+  "excerpt": "Post excerpt",
+  "category": 1,
+  "content": "Post content",
+  "image": null,
+  "enabled": true,
+  "slug": "java",
+  "tags": ["java", "react"],
+  "title": "Post title"
+}
+
+### Read posts
+GET http://localhost:8008/api/v1/posts
+
+
+### Read post 1
+GET http://localhost:8008/api/v1/posts/1
+
+
+### Update post 1
+PATCH http://localhost:8008/api/v1/posts/1
+Content-Type: application/json
+
+{
+  "title": "Updated Post title",
+  "excerpt": "Updated post excerpt",
+  "category": 1,
+  "content": "Updated post content",
+  "image": null,
+  "enabled": false,
+  "slug": "java",
+  "tags": ["java", "react"]
+}
+
+
+### DELETE Post by id
+DELETE http://localhost:8008/api/v1/posts/1
+
+
+# CATEGORIES ###################
+
+
+### Create category
+POST http://localhost:8008/api/v1/posts-categories
+Content-Type: application/json
+
+{
+  "title": "Java",
+  "slug": "java",
+  "enabled": true
+}
+
+
+### Read categories
+GET http://localhost:8008/api/v1/posts-categories
+
+
+### Read category 1
+GET http://localhost:8008/api/v1/posts-categories/1
+
+
+### Update category 1
+PATCH http://localhost:8008/api/v1/posts-categories/1
+Content-Type: application/json
+
+{
+  "title": "Java++",
+  "slug": "java-plus-plus",
+  "enabled": false
+}
+
+
+### DELETE category by id
+DELETE http://localhost:8008/api/v1/posts-categories/1
+
+
+# COMMENTS ###################
+
+
+### Create comment
+POST http://localhost:8008/api/v1/posts-comments/1
+Content-Type: application/json
+
+{
+  "content": "Comment",
+  "enabled": true
+}
+
+
+### Read comments
+GET http://localhost:8008/api/v1/posts-comments
+
+
+### Read comment 1
+GET http://localhost:8008/api/v1/posts-comments/1
+
+
+### Update comment 1
+PATCH http://localhost:8008/api/v1/posts-comments/2
+Content-Type: application/json
+
+{
+  "content": "Updated comment",
+  "enabled": false
+}
+
+
+### DELETE comment by id
+DELETE http://localhost:8008/api/v1/posts-comments/1

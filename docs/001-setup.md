@@ -117,6 +117,3 @@ Idea repair:  File - Repair Ide or: File - Invalidate Caches
 ## Docker & WSL
 Install wsl: wsl --install Ubuntu # Docker like standard WSL
 Only after wsl up and running install Docker!
-
-## Run
-$env:APP_PROFILE="prod"; $env:APP_ADMIN_EMAIL="gendalf@white.com"; $env:DB_HOST="localhost"; $env:DB_PORT="5432" ;$env:DB_NAME="web"; $env:DB_USER="web"; $env:DB_PASSWORD="web"; docker compose -f .\compose.prod.yml up
